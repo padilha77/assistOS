@@ -18,7 +18,6 @@ public class Cliente {
         this.id = id;
     }
 
-
     // Getters e Setters
     public String getNome() {
         return nome;
