@@ -15,7 +15,9 @@ public class ClienteRepository {
         }
 
         public List<Cliente> listar() {
+
             return List.copyOf(clientes);
+
         }
 
         public void excluir(Cliente cliente) {
@@ -32,6 +34,7 @@ public class ClienteRepository {
             System.out.println(cliente.getEmail());
             System.out.println(cliente.getId());
         }
+
         public Cliente buscarPorId(String id) {
             for (Cliente cliente : clientes) {
                 if (cliente.getId().equals(id)) {

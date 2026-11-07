@@ -2,8 +2,8 @@ package com.assistos.view;
 
 import com.assistos.model.Cliente;
 import com.assistos.repository.ClienteRepository;
-import java.util.List;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class ClienteMenu {
@@ -13,13 +13,14 @@ public class ClienteMenu {
         System.out.println("====== Bem Vindo ao AssistOS ======");
         Scanner sc = new Scanner(System.in);
         while (true) {
-        System.out.println("Escolha uma das opções abaixo: ");
+
         System.out.println("1. Cadastrar Cliente ");
         System.out.println("2. Listar Clientes ");
         System.out.println("3. Excluir Cliente ");
         System.out.println("4. Atualizar Dados do Cliente ");
-        System.out.println("5. Buscar Cliente ");
+        System.out.println("5. Buscar Cliente por ID ");
         System.out.println("0. Sair ");
+        System.out.println("Escolha uma das opções acima: ");
 
         if (!sc.hasNextLine()) {
             return;
@@ -29,21 +30,47 @@ public class ClienteMenu {
         switch (opcao) {
             // Cadastrar novo cliente
             case "1":
+
                 System.out.println("Digite o nome do cliente: ");
                 String nome = sc.nextLine();
+                if (nome.isBlank() || nome == null) {
+                    throw new IllegalArgumentException("Por favor preencha esse campo!");
+                }
 
+                // cpf
                 System.out.println("Digite o cpf do cliente: ");
                 String cpf = sc.nextLine();
+                if (cpf.isBlank() || cpf == null) {
+                    throw new IllegalArgumentException("Por favor preencha esse campo!");
+                } else if (!cpf.matches("^[0-9]{11}$")) {
+                    System.out.println("Erro: o CPF deve conter exatamente 11 digitos, sem pontos ou traços!");
+                    return;
+                }
 
+                // tel
                 System.out.println("Digite o telefone do cliente: ");
                 String telefone = sc.nextLine();
+                if (telefone.isBlank() || telefone == null) {
+                    throw new IllegalArgumentException("Por favor preencha esse campo!");
+                }else if (!telefone.matches("^[0-9]{11}$")) {
+                    System.out.println("Erro: o CPF deve conter exatamente 11 digitos, sem pontos ou traços!");
+                }
 
+                // email
                 System.out.println("Digite o email do cliente: ");
                 String email = sc.nextLine();
 
+                // rg
                 System.out.println("Digite o rg do cliente: ");
                 String rg = sc.nextLine();
+                if (rg.isBlank() || rg == null) {
+                    throw new IllegalArgumentException("Por favor preencha esse campo!");
+                }else if (!rg.matches("^[0-9]{11}$")) {
+                    System.out.println("Erro: o RG deve conter exatamente 11 digitos, sem pontos ou traços!");
+                }
 
+
+                // ID
                 System.out.println("Digite o ID do cliente: ");
                 String id = sc.nextLine().trim();
                 if (id.isEmpty() || clienteRepository.buscarPorId(id) != null) {
@@ -98,12 +125,18 @@ public class ClienteMenu {
                 break;
             // Buscar cliente
             case "5":
+                System.out.println("Digite o ID do cliente: ");
+                String idCliente = sc.nextLine();
+                if (clienteRepository.buscarPorId(idCliente) != null) {
+                    System.out.println();
+                }
                 break;
 
             // Sair/enecerrar programa
             case "0":
                 System.out.println("Saindo...");
                 return;
+
             default:
                 System.out.println("Opção inválida.");
 
