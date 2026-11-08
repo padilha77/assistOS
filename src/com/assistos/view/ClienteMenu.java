@@ -2,6 +2,7 @@ package com.assistos.view;
 
 import com.assistos.model.Cliente;
 import com.assistos.repository.ClienteRepository;
+import java.security.SecureRandom;
 
 import java.util.List;
 import java.util.Scanner;
@@ -53,7 +54,7 @@ public class ClienteMenu {
                 if (telefone.isBlank() || telefone == null) {
                     throw new IllegalArgumentException("Por favor preencha esse campo!");
                 }else if (!telefone.matches("^[0-9]{11}$")) {
-                    System.out.println("Erro: o CPF deve conter exatamente 11 digitos, sem pontos ou traços!");
+                    System.out.println("Erro: o telefone deve conter exatamente 11 digitos, sem pontos ou traços!");
                 }
 
                 // email
@@ -71,14 +72,9 @@ public class ClienteMenu {
 
 
                 // ID
-                System.out.println("Digite o ID do cliente: ");
-                String id = sc.nextLine().trim();
-                if (id.isEmpty() || clienteRepository.buscarPorId(id) != null) {
-                    System.out.println("ID vazio ou já cadastrado.");
-                    break;
-                }
+                String id = clienteRepository.gerarId();
 
-                Cliente cliente = new Cliente(nome, cpf, telefone, email, rg, id);
+                Cliente cliente = new Cliente(nome, cpf, telefone, email, rg, id);   // retirado id do construtor
 
                 clienteRepository.salvar(cliente);
 
@@ -156,7 +152,7 @@ public class ClienteMenu {
         String email = lerNovoValor(sc, "Email", cadastrado.getEmail());
         String rg = lerNovoValor(sc, "RG", cadastrado.getRg());
 
-        Cliente atualizado = new Cliente(nome, cpf, telefone, email, rg, id);
+        Cliente atualizado = new Cliente(nome, cpf, telefone, email, rg, id);    // retirado id
         if (clienteRepository.atualizar(atualizado)) {
             System.out.println("Cliente atualizado com sucesso!");
             System.out.println("==============================");

@@ -23,9 +23,7 @@ public class Cliente {
         return nome;
     }
     public void setNome(String nome) {
-        if (nome.matches("^[A-a-Za-适应-🏹\\s]+$")) {
-
-        }else  {
+        if (!nome.matches("^[A-a-Za-适应-🏹\\s]+$")) {
             System.out.println("O nome deve conter apenas letras e espaços!");;
         }
         this.nome = nome;

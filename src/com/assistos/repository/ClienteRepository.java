@@ -2,6 +2,7 @@ package com.assistos.repository;
 
 import com.assistos.model.Cliente;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,15 +32,23 @@ public class ClienteRepository {
         return clientes.remove(cliente);
         }
 
+    public String gerarId() {
+        SecureRandom id = new SecureRandom();
+
+        long idU = Math.abs(id.nextLong());
+        System.out.println("ID do cliente: \n" + idU);
+
+        return String.valueOf(idU);
+    }
+
 
 
         public void listarDados(Cliente cliente) {
-            System.out.println(cliente.getNome());
-            System.out.println(cliente.getCpf());
-            System.out.println(cliente.getRg());
-            System.out.println(cliente.getTelefone());
-            System.out.println(cliente.getEmail());
-            System.out.println(cliente.getId());
+            System.out.println("Nome: " + cliente.getNome());
+            System.out.println("CPF: " + cliente.getCpf()); System.out.println("RG: " + cliente.getRg());
+            System.out.println("Telefone: " + cliente.getTelefone());
+            System.out.println("Email: " + cliente.getEmail());
+            System.out.println("ID: " + cliente.getId());
         }
 
         public Cliente buscarPorId(String id) {
