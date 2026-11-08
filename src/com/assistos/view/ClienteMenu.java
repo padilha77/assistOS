@@ -96,7 +96,9 @@ public class ClienteMenu {
 
                 System.out.println("Digite o ID do cliente que deseja excluir: ");
                 String idExcluir = sc.nextLine();
-
+                if (idExcluir.isBlank() || idExcluir == null) {
+                    throw new IllegalArgumentException("Por favor preencha esse campo!");
+                }
                 clienteRepository.excluir(idExcluir);
 
                 System.out.println("Cliente excluído com sucesso!" );
@@ -107,17 +109,29 @@ public class ClienteMenu {
             case "4":
                 atualizarCliente(sc);
                 break;
+
             // Buscar cliente
             case "5":
-                System.out.println("Digite o ID do cliente: ");
-                String idCliente = sc.nextLine().trim();
-                Cliente clienteEncontrado = clienteRepository.buscarPorId(idCliente);
+                try {
+                    System.out.println("Digite o ID do cliente: ");
+                    String idCliente = sc.nextLine().trim();
 
-                if (clienteEncontrado != null) {
-                    clienteRepository.listarDados(clienteEncontrado);
-                    System.out.println("==============================");
-                }else {
-                    System.out.println("Cliente não encontrado!");
+                    if (idCliente.isBlank()) {
+                        throw new IllegalArgumentException("Por favor preencha esse campo!");
+                    }
+
+                    Cliente clienteEncontrado = clienteRepository.buscarPorId(idCliente);
+
+                    if (clienteEncontrado != null) {
+                        clienteRepository.listarDados(clienteEncontrado);
+                        System.out.println("==============================");
+                    } else {
+                        System.out.println("Cliente não encontrado!");
+                        System.out.println("==============================");
+                    }
+
+                }catch (IllegalArgumentException e) {
+                    System.out.println("Erro: " + e.getMessage());
                     System.out.println("==============================");
                 }
                 break;
