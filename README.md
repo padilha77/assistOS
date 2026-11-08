@@ -40,11 +40,33 @@ O desenvolvimento será dividido em etapas, conforme a evolução do projeto.
 - [x] Modelagem da entidade Cliente
 - [x] Estrutura inicial de armazenamento em memória
 - [x] Métodos de armazenamento e consulta
-- [ ] Cadastro integrado ao menu
-- [ ] Listagem de clientes
-- [ ] Busca por identificador
-- [ ] Atualização de dados
-- [ ] Exclusão de clientes
+- [x] Cadastro integrado ao menu, com verificação de ID vazio ou repetido
+- [x] Listagem de clientes
+- [x] Busca por identificador (ID)
+- [x] Atualização de dados pelo ID
+- [x] Exclusão de clientes pelo ID
+- [x] Menu interativo no terminal, com opção de saída
+
+### Funcionamento atual
+
+Ao executar a classe `com.assistos.Mains`, o sistema abre o menu de clientes com as seguintes opções:
+
+- `1`: Cadastrar cliente.
+- `2`: Listar clientes.
+- `3`: Excluir cliente pelo ID.
+- `4`: Atualizar dados do cliente pelo ID.
+- `5`: Buscar cliente pelo ID.
+- `0`: Sair.
+
+O cadastro reúne nome, CPF, telefone, email, RG e ID. Na atualização, é possível alterar os dados mantendo o mesmo ID. Campos deixados em branco preservam o valor atual, e o sistema informa quando o cliente não é encontrado.
+
+Os dados são armazenados apenas em memória durante a execução. Ao encerrar o programa, os cadastros são perdidos.
+
+### Melhorias pendentes nesta versão
+
+- Aprimorar as validações de cadastro e aplicá-las também à atualização.
+- Tratar entradas inválidas sem encerrar o programa.
+- Ajustar a mensagem de exclusão para informar quando o ID não for encontrado.
 
 **Funcionalidades futuras**
 
@@ -63,7 +85,7 @@ O projeto utiliza uma organização por responsabilidades, separando:
 
 - `model`: entidades e representação dos dados.
 - `repository`: armazenamento e acesso aos dados.
-- `service`: regras de negócio.
+- `service`: estrutura reservada para as regras de negócio, ainda sem implementação.
 - `view`: interação com o usuário.
 
 A estrutura será aprimorada conforme novas tecnologias forem incorporadas.

@@ -83,6 +83,7 @@ public class ClienteMenu {
                 clienteRepository.salvar(cliente);
 
                 System.out.println("Cliente cadastrado com sucesso!");
+                System.out.println("==============================");
                 break;
 
             // Listar clientes
