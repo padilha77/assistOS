@@ -1,8 +1,9 @@
 package com.assistos.repository;
 
 import com.assistos.model.Cliente;
-import java.util.List;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class ClienteRepository {
 
@@ -20,11 +21,17 @@ public class ClienteRepository {
 
         }
 
-        public void excluir(Cliente cliente) {
 
-            this.clientes.remove(cliente);
+        public boolean excluir(String id) {
+        Cliente cliente = buscarPorId(id);
 
+        if (cliente == null) {
+            return false;
         }
+        return clientes.remove(cliente);
+        }
+
+
 
         public void listarDados(Cliente cliente) {
             System.out.println(cliente.getNome());

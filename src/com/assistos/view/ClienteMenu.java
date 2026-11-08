@@ -65,8 +65,8 @@ public class ClienteMenu {
                 String rg = sc.nextLine();
                 if (rg.isBlank() || rg == null) {
                     throw new IllegalArgumentException("Por favor preencha esse campo!");
-                }else if (!rg.matches("^[0-9]{11}$")) {
-                    System.out.println("Erro: o RG deve conter exatamente 11 digitos, sem pontos ou traços!");
+                }else if (!rg.matches("^[0-9]{9}$")) {
+                    System.out.println("Erro: o RG deve conter exatamente 9 digitos, sem pontos ou traços!");
                 }
 
 
@@ -86,37 +86,24 @@ public class ClienteMenu {
                 break;
 
             // Listar clientes
-            case "2":
+            case "2": System.out.println("====== Listar clientes ======");
                List<Cliente> clientes = clienteRepository.listar();
                for (Cliente cadastrado : clientes) {
                    clienteRepository.listarDados(cadastrado);
+                   System.out.println("==============================");
                }
                break;
 
             // Excluir cliente
             case "3":
-                System.out.println("Digite o nome do cliente: ");
-                String nomeExcluir = sc.nextLine();
 
-                System.out.println("Digite o cpf do cliente: ");
-                String cpfExcluir = sc.nextLine();
-
-                System.out.println("Digite o telefone do cliente: ");
-                String telefoneExcluir = sc.nextLine();
-
-                System.out.println("Digite o email do cliente: ");
-                String emailExluir = sc.nextLine();
-
-                System.out.println("Digite o rg do cliente: ");
-                String rgExcluir = sc.nextLine();
-
+                System.out.println("Digite o ID do cliente que deseja excluir: ");
                 String idExcluir = sc.nextLine();
 
-                Cliente clienteExcluir = new Cliente(nomeExcluir, cpfExcluir, telefoneExcluir, emailExluir, rgExcluir, idExcluir);
-
-                clienteRepository.excluir(clienteExcluir);
+                clienteRepository.excluir(idExcluir);
 
                 System.out.println("Cliente excluído com sucesso!" );
+                System.out.println("==============================" );
                 break;
 
             // Atualizar dados do cliente
@@ -126,9 +113,15 @@ public class ClienteMenu {
             // Buscar cliente
             case "5":
                 System.out.println("Digite o ID do cliente: ");
-                String idCliente = sc.nextLine();
-                if (clienteRepository.buscarPorId(idCliente) != null) {
-                    System.out.println();
+                String idCliente = sc.nextLine().trim();
+                Cliente clienteEncontrado = clienteRepository.buscarPorId(idCliente);
+
+                if (clienteEncontrado != null) {
+                    clienteRepository.listarDados(clienteEncontrado);
+                    System.out.println("==============================");
+                }else {
+                    System.out.println("Cliente não encontrado!");
+                    System.out.println("==============================");
                 }
                 break;
 
@@ -151,6 +144,7 @@ public class ClienteMenu {
         Cliente cadastrado = clienteRepository.buscarPorId(id);
         if (cadastrado == null) {
             System.out.println("Cliente não encontrado.");
+            System.out.println("==============================");
             return;
         }
 
@@ -164,8 +158,10 @@ public class ClienteMenu {
         Cliente atualizado = new Cliente(nome, cpf, telefone, email, rg, id);
         if (clienteRepository.atualizar(atualizado)) {
             System.out.println("Cliente atualizado com sucesso!");
+            System.out.println("==============================");
         } else {
             System.out.println("Cliente não encontrado.");
+            System.out.println("==============================");
         }
     }
 
