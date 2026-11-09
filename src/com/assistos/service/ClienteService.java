@@ -15,6 +15,11 @@ public class ClienteService {
 
     public boolean jaExisteCadastro(Cliente novo, List<Cliente> clientes) {
         for (Cliente cliente : clientes) {
+            // na atualização ignora o próprio cadastro
+            if (cliente.getId().equals(novo.getId())) {
+                continue;
+            }
+
             if (cliente.getEmail().equalsIgnoreCase(novo.getEmail()) ||
                     cliente.getCpf().equals(novo.getCpf()) ||
                     cliente.getTelefone().equals(novo.getTelefone()) ||

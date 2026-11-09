@@ -41,6 +41,7 @@ O desenvolvimento será dividido em etapas, conforme a evolução do projeto.
 - [x] Estrutura inicial de armazenamento em memória
 - [x] Métodos de armazenamento e consulta
 - [x] Cadastro integrado ao menu, com geração automática de ID
+- [x] Verificação de CPF, email, telefone e RG duplicados durante o cadastro
 - [x] Listagem de clientes
 - [x] Busca por identificador (ID)
 - [x] Atualização de dados pelo ID
@@ -60,11 +61,11 @@ Ao executar a classe `com.assistos.Mains`, o sistema abre o menu de clientes com
 - `5`: Buscar cliente pelo ID.
 - `0`: Sair.
 
-O cadastro reúne nome, CPF, telefone, email e RG. O ID é gerado automaticamente pelo sistema e utilizado nas operações de busca, atualização e exclusão. Na atualização, é possível alterar os dados mantendo o mesmo ID. Campos deixados em branco preservam o valor atual, e o sistema informa quando o cliente não é encontrado.
+O cadastro reúne nome, CPF, telefone, email e RG. Antes de salvar, o sistema verifica se CPF, email, telefone ou RG já estão associados a outro cadastro. O ID é gerado automaticamente e utilizado nas operações de busca, atualização e exclusão. Na atualização, é possível alterar os dados mantendo o mesmo ID; campos deixados em branco preservam o valor atual.
 
 ### Identificação dos clientes
 
-O método `gerarId()`, em `ClienteRepository`, utiliza `SecureRandom` para gerar um número, convertido em `String` e associado ao cliente durante o cadastro. O ID é exibido no terminal.
+O método `gerarId()`, em `ClienteService`, utiliza `SecureRandom` para gerar um número, convertido em `String` e associado ao cliente durante o cadastro. O ID é exibido no terminal.
 
 A geração ainda não garante a ausência de colisões entre identificadores. Essa verificação faz parte das melhorias planejadas.
 
@@ -73,9 +74,10 @@ Os dados são armazenados apenas em memória durante a execução. Ao encerrar o
 ### Melhorias pendentes nesta versão
 
 - Aprimorar as validações de cadastro e aplicá-las também à atualização.
+- Verificar CPF, email, telefone e RG duplicados também durante a atualização.
 - Expandir o tratamento de entradas inválidas para todas as opções do menu (a busca por ID já trata campo vazio com `try/catch`).
 - Ajustar a mensagem de exclusão para informar quando o ID não for encontrado.
-- Garantir que IDs gerados sejam únicos.
+- Garantir que IDs gerados sejam únicos, verificando colisões com os IDs já cadastrados.
 - Adicionar testes automatizados para as operações de cadastro, consulta, atualização e exclusão.
 
 **Funcionalidades futuras**
@@ -95,7 +97,7 @@ O projeto utiliza uma organização por responsabilidades, separando:
 
 - `model`: entidades e representação dos dados.
 - `repository`: armazenamento e acesso aos dados.
-- `service`: estrutura reservada para as regras de negócio, ainda sem implementação.
+- `service`: regras de negócio, como geração de IDs e verificação de dados duplicados.
 - `view`: interação com o usuário.
 
 A estrutura será aprimorada conforme novas tecnologias forem incorporadas.

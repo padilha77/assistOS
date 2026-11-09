@@ -73,6 +73,7 @@ public class ClienteMenu {
                 // verifica se já existe cliente cadastrado com ese cpf, email, telefone ou rg
                 ClienteService clienteService = new ClienteService();
                 Cliente dadosInformado = new Cliente(nome, cpf, telefone, email, rg, "");
+
                 if (clienteService.jaExisteCadastro(dadosInformado, clienteRepository.listar())){
                     System.out.println("Já existe um cliente com esse CPF, email, telefone ou RG.");
                     break;
@@ -116,6 +117,7 @@ public class ClienteMenu {
             case "4":
                 atualizarCliente(sc);
                 break;
+
 
             // Buscar cliente
             case "5":
