@@ -31,6 +31,8 @@ public class ClienteMenu {
         switch (opcao) {
             // Cadastrar novo cliente
             case "1":
+                ClienteService clienteService = new ClienteService();
+
 
                 System.out.println("Digite o nome do cliente: ");
                 String nome = sc.nextLine();
@@ -39,41 +41,95 @@ public class ClienteMenu {
                 }
 
                 // cpf
-                System.out.println("Digite o cpf do cliente: ");
-                String cpf = sc.nextLine();
-                if (cpf.isBlank()) {
-                    throw new IllegalArgumentException("Por favor preencha esse campo!");
-                } else if (!cpf.matches("^[0-9]{11}$")) {
-                    System.out.println("Erro: o CPF deve conter exatamente 11 digitos, sem pontos ou traços!");
-                    return;
+                String cpf;
+                while (true) {
+                    System.out.println("Digite o cpf do cliente: ");
+                    if (!sc.hasNextLine()) {
+                        return;
+                    }
+                    cpf = sc.nextLine().trim();
+
+                    if (!cpf.matches("[0-9]{11}")) {
+                        System.out.println("Erro: o CPF deve conter exatamente 11 digitos, sem pontos ou traços!");
+                        continue;
+                    }
+
+                    if (clienteService.cpfJaExiste(cpf, clienteRepository.listar())) {
+                        System.out.println("CPF já está em uso, digite outro.");
+                        continue;
+                    }
+
+                    break;
                 }
 
                 // tel
-                System.out.println("Digite o telefone do cliente: ");
-                String telefone = sc.nextLine();
-                if (telefone.isBlank()) {
-                    throw new IllegalArgumentException("Por favor preencha esse campo!");
-                }else if (!telefone.matches("^[0-9]{11}$")) {
-                    System.out.println("Erro: o telefone deve conter exatamente 11 digitos, sem pontos ou traços!");
+                String telefone;
+                while (true) {
+                    System.out.println("Digite o telefone do cliente: ");
+                    if (!sc.hasNextLine()) {
+                        return;
+                    }
+                    telefone = sc.nextLine().trim();
+
+                    if (telefone.isBlank()) {
+                        System.out.println("Por favor preencha esse campo!");
+                        continue;
+                    } else if (!telefone.matches("^[0-9]{11}$")) {
+                        System.out.println("Erro: o telefone deve conter exatamente 11 digitos, sem pontos ou traços!");
+                        continue;
+                    }
+                    if (clienteService.telefoneJaExiste(telefone, clienteRepository.listar())) {
+                        System.out.println("Telefone já está em uso, digite outro.");
+                        continue;
+                    }
+                    break;
                 }
 
                 // email
-                System.out.println("Digite o email do cliente: ");
-                String email = sc.nextLine();
+                String email;
+                while (true) {
+                    System.out.println("Digite o email do cliente: ");
+                    if (!sc.hasNextLine()) {
+                        return;
+                    }
+                    email = sc.nextLine().trim();
+
+                    if (email.isBlank()) {
+                        System.out.println("Por favor preencha esse campo!");
+                        continue;
+                    }
+                    if (clienteService.emailJaExiste(email, clienteRepository.listar())) {
+                        System.out.println("Este email já está em uso, digite outro.");
+                        continue;
+                    }
+                    break;
+                }
 
                 // rg
-                System.out.println("Digite o rg do cliente: ");
-                String rg = sc.nextLine();
-                if (rg.isBlank()) {
-                    throw new IllegalArgumentException("Por favor preencha esse campo!");
-                }else if (!rg.matches("^[0-9]{9}$")) {
-                    System.out.println("Erro: o RG deve conter exatamente 9 digitos, sem pontos ou traços!");
+                String rg;
+                while(true) {
+                    System.out.println("Digite o rg do cliente: ");
+                    if (!sc.hasNextLine()) {
+                        return;
+                    }
+                    rg = sc.nextLine().trim();
+
+                    if (rg.isBlank()) {
+                        System.out.println("Por favor preencha esse campo!");
+                        continue;
+                    } else if (!rg.matches("^[0-9]{9}$")) {
+                        System.out.println("Erro: o RG deve conter exatamente 9 digitos, sem pontos ou traços!");
+                        continue;
+                    }
+                    if (clienteService.rgJaExiste(rg, clienteRepository.listar())) {
+                        System.out.println("RG já está em uso, digite outro.");
+                        continue;
+                    }
+                    break;
                 }
 
                 // verifica se já existe cliente cadastrado com ese cpf, email, telefone ou rg
-                ClienteService clienteService = new ClienteService();
                 Cliente dadosInformado = new Cliente(nome, cpf, telefone, email, rg, "");
-
                 if (clienteService.jaExisteCadastro(dadosInformado, clienteRepository.listar())){
                     System.out.println("Já existe um cliente com esse CPF, email, telefone ou RG.");
                     break;
@@ -175,7 +231,13 @@ public class ClienteMenu {
         String email = lerNovoValor(sc, "Email", cadastrado.getEmail());
         String rg = lerNovoValor(sc, "RG", cadastrado.getRg());
 
-        Cliente atualizado = new Cliente(nome, cpf, telefone, email, rg, id);    // retirado id
+        Cliente atualizado = new Cliente(nome, cpf, telefone, email, rg, id);
+        ClienteService clienteService = new ClienteService();
+
+        if (clienteService.jaExisteCadastro(atualizado, clienteRepository.listar())) {
+            System.out.println("Outro cliente já usa esse CPF, email, telefone ou RG.");
+            return;
+        }
         if (clienteRepository.atualizar(atualizado)) {
             System.out.println("Cliente atualizado com sucesso!");
             System.out.println("==============================");

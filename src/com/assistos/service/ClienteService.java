@@ -13,6 +13,42 @@ public class ClienteService {
         return String.valueOf(new SecureRandom().nextLong(0, Long.MAX_VALUE));
     }
 
+    public boolean cpfJaExiste(String cpf, List<Cliente> clientes) {
+        for (Cliente cliente : clientes) {
+            if (cliente.getCpf().equals(cpf)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean telefoneJaExiste(String telefone, List<Cliente> clientes) {
+        for (Cliente cliente : clientes) {
+            if (cliente.getTelefone().equals(telefone)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean emailJaExiste(String email, List<Cliente> clientes) {
+        for (Cliente cliente : clientes) {
+            if (cliente.getEmail().equalsIgnoreCase(email)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean rgJaExiste(String rg, List<Cliente> clientes) {
+        for (Cliente cliente : clientes) {
+            if (cliente.getRg().equals(rg)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean jaExisteCadastro(Cliente novo, List<Cliente> clientes) {
         for (Cliente cliente : clientes) {
             // na atualização ignora o próprio cadastro
