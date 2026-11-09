@@ -2,7 +2,7 @@ package com.assistos.view;
 
 import com.assistos.model.Cliente;
 import com.assistos.repository.ClienteRepository;
-import java.security.SecureRandom;
+import com.assistos.service.ClienteService;
 
 import java.util.List;
 import java.util.Scanner;
@@ -34,14 +34,14 @@ public class ClienteMenu {
 
                 System.out.println("Digite o nome do cliente: ");
                 String nome = sc.nextLine();
-                if (nome.isBlank() || nome == null) {
+                if (nome.isBlank()) {
                     throw new IllegalArgumentException("Por favor preencha esse campo!");
                 }
 
                 // cpf
                 System.out.println("Digite o cpf do cliente: ");
                 String cpf = sc.nextLine();
-                if (cpf.isBlank() || cpf == null) {
+                if (cpf.isBlank()) {
                     throw new IllegalArgumentException("Por favor preencha esse campo!");
                 } else if (!cpf.matches("^[0-9]{11}$")) {
                     System.out.println("Erro: o CPF deve conter exatamente 11 digitos, sem pontos ou traços!");
@@ -51,7 +51,7 @@ public class ClienteMenu {
                 // tel
                 System.out.println("Digite o telefone do cliente: ");
                 String telefone = sc.nextLine();
-                if (telefone.isBlank() || telefone == null) {
+                if (telefone.isBlank()) {
                     throw new IllegalArgumentException("Por favor preencha esse campo!");
                 }else if (!telefone.matches("^[0-9]{11}$")) {
                     System.out.println("Erro: o telefone deve conter exatamente 11 digitos, sem pontos ou traços!");
@@ -64,7 +64,7 @@ public class ClienteMenu {
                 // rg
                 System.out.println("Digite o rg do cliente: ");
                 String rg = sc.nextLine();
-                if (rg.isBlank() || rg == null) {
+                if (rg.isBlank()) {
                     throw new IllegalArgumentException("Por favor preencha esse campo!");
                 }else if (!rg.matches("^[0-9]{9}$")) {
                     System.out.println("Erro: o RG deve conter exatamente 9 digitos, sem pontos ou traços!");
@@ -72,31 +72,32 @@ public class ClienteMenu {
 
 
                 // ID
-                String id = clienteRepository.gerarId();
+                ClienteService clienteService = new ClienteService();
+
+                String id = clienteService.gerarId();
 
                 Cliente cliente = new Cliente(nome, cpf, telefone, email, rg, id);   // retirado id do construtor
 
                 clienteRepository.salvar(cliente);
 
                 System.out.println("Cliente cadastrado com sucesso!");
+                System.out.println("ID do cliente: " + id);
                 System.out.println("==============================");
                 break;
 
             // Listar clientes
             case "2": System.out.println("====== Listar clientes ======");
-               List<Cliente> clientes = clienteRepository.listar();
-               for (Cliente cadastrado : clientes) {
-                   clienteRepository.listarDados(cadastrado);
-                   System.out.println("==============================");
-               }
-               break;
-
+                List<Cliente> clientes = clienteRepository.listar();
+                for (Cliente c : clientes) {
+                    exibirDadosCliente(c);
+                }
+                break;
             // Excluir cliente
             case "3":
 
                 System.out.println("Digite o ID do cliente que deseja excluir: ");
                 String idExcluir = sc.nextLine();
-                if (idExcluir.isBlank() || idExcluir == null) {
+                if (idExcluir.isBlank()) {
                     throw new IllegalArgumentException("Por favor preencha esse campo!");
                 }
                 clienteRepository.excluir(idExcluir);
@@ -123,7 +124,7 @@ public class ClienteMenu {
                     Cliente clienteEncontrado = clienteRepository.buscarPorId(idCliente);
 
                     if (clienteEncontrado != null) {
-                        clienteRepository.listarDados(clienteEncontrado);
+                        exibirDadosCliente(clienteEncontrado);
                         System.out.println("==============================");
                     } else {
                         System.out.println("Cliente não encontrado!");
@@ -180,6 +181,16 @@ public class ClienteMenu {
         System.out.println(campo + " (atual: " + valorAtual + "): ");
         String novoValor = sc.nextLine().trim();
         return novoValor.isEmpty() ? valorAtual : novoValor;
+    }
+
+    private void exibirDadosCliente(Cliente cliente) {
+        System.out.println("Nome: " + cliente.getNome());
+        System.out.println("CPF: " + cliente.getCpf());
+        System.out.println("RG: " + cliente.getRg());
+        System.out.println("Telefone: " + cliente.getTelefone());
+        System.out.println("Email: " + cliente.getEmail());
+        System.out.println("ID: " + cliente.getId());
+        System.out.println("==============================");
     }
 
 }
