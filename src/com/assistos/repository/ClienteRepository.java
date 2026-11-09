@@ -25,13 +25,13 @@ public class ClienteRepository {
         }
 
         // excluir cliente
-        public boolean excluir(String id) {
+        public void excluir(String id) {
         Cliente cliente = buscarPorId(id);
 
         if (cliente == null) {
-            return false;
+            return;
         }
-        return clientes.remove(cliente);
+            clientes.remove(cliente);
         }
 
        // gerar ID automaticamente para cliente sendo cadastrado
