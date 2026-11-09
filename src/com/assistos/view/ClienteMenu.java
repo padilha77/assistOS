@@ -70,9 +70,15 @@ public class ClienteMenu {
                     System.out.println("Erro: o RG deve conter exatamente 9 digitos, sem pontos ou traços!");
                 }
 
+                // verifica se já existe cliente cadastrado com ese cpf, email, telefone ou rg
+                ClienteService clienteService = new ClienteService();
+                Cliente dadosInformado = new Cliente(nome, cpf, telefone, email, rg, "");
+                if (clienteService.jaExisteCadastro(dadosInformado, clienteRepository.listar())){
+                    System.out.println("Já existe um cliente com esse CPF, email, telefone ou RG.");
+                    break;
+                }
 
                 // ID
-                ClienteService clienteService = new ClienteService();
 
                 String id = clienteService.gerarId();
 
